@@ -1,7 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mentorful/screens/leaderboard.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late Directory appDir;
+late SharedPreferences prefs;
+
+void main() async {
+  appDir = await getApplicationDocumentsDirectory();
+  prefs = await SharedPreferences.getInstance();
+
   runApp(const MyApp());
 }
 
