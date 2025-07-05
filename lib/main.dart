@@ -13,12 +13,24 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 final GlobalKey<MentorfulState> mentorfulKey = GlobalKey<MentorfulState>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 late Directory appDir;
 late SharedPreferences prefs;
 final localNotif = FlutterLocalNotificationsPlugin();
+
+// GoogleSignIn instance
+final GoogleSignIn _googleSignIn = GoogleSignIn(
+  clientId: '136345961977-orosn54cojaj3o6fs9kug2t4ihq6rbu9.apps.googleusercontent.com',
+  scopes: [
+    'email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/calendar.readonly',
+  ],
+);
 
 //android
 Future<void> requestNotificationPermission() async {
@@ -128,6 +140,49 @@ class Mentorful extends StatefulWidget {
 
 class MentorfulState extends State<Mentorful> {
   int selectedIndex = 0;
+
+  GoogleSignInAccount? _currentUser;
+  String _calendarResponse = '';
+
+  Future<void> _handleSignIn() async {
+  try {
+    print('Attempting to sign in...');
+    final account = await _googleSignIn.signIn();
+    if (account == null) {
+      setState(() => _calendarResponse = 'Sign-in cancelled.');
+      return;
+    }
+
+    // **1) Immediately flip the UI over to "signed in"**
+    setState(() {
+      _currentUser = account;
+      _calendarResponse = 'Loading your calendar…';
+    });
+
+    // 2) Then fetch your calendar
+    final auth  = await account.authentication;
+    final token = auth.accessToken!;
+    final uri   = Uri.parse('http://172.20.10.2:8000/get-calendar/?token=$token');
+    final resp  = await http.get(uri);
+
+    // 3) Finally, show the response
+    setState(() => _calendarResponse = resp.body);
+  } catch (error) {
+    // If anything blows up, at least _currentUser is set:
+    setState(() {
+      _calendarResponse = 'Error: $error';
+    });
+  }
+}
+
+
+  Future<void> _handleSignOut() async {
+    await _googleSignIn.signOut();
+    setState(() {
+      _currentUser = null;
+      _calendarResponse = '';
+    });
+  }
 
   @override
   Widget build(BuildContext) {
