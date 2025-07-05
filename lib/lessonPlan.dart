@@ -51,7 +51,9 @@ class _LessonPlanState extends State<LessonPlan> {
           SliverToBoxAdapter(
             child: TextButton(
               child: Text("e"),
-              onPressed:() => (setState(() => a = !a)),
+              onPressed:() => (
+                setState(() => a = !a)
+                ),
             ),
           ),
           a ? SliverToBoxAdapter(child: LessonList()) : SliverToBoxAdapter(child: SizedBox()),
