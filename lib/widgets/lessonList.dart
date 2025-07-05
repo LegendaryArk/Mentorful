@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../lesson.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../screens/lesson.dart';
 
 
 
@@ -20,6 +21,14 @@ class _LessonListState extends State<LessonList> {
   @override
   void initState() {
     super.initState();
+    _loadOccupation();
+  }
+  
+  void _loadOccupation() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      occupation = prefs.getString("occupation") ?? "other";
+    });
   }
 
   @override
