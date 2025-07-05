@@ -31,7 +31,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         lessons: [
           Lesson(name: "Calendars", icon: Icons.calendar_month, txts: ["hi", "test", "asfddsaf"], imgs: [null, null, null]),
           Lesson(
-            name: "Blocking Time",
+            name: "Time blocks",
             icon: Icons.dashboard_customize,
             txts: ["help", "asdfjdsklfj", "dks"],
             imgs: [null, null, null],
@@ -39,11 +39,116 @@ class _LessonsScreenState extends State<LessonsScreen> {
           Lesson(name: "Prioritize", icon: Icons.new_releases, txts: ["kms", "lsd;fkd;s", "dfks"], imgs: [null, null, null]),
         ],
       ),
-      LessonCategory(id: 1, name: "Cooking", icon: Icons.bakery_dining, lessons: []),
-      LessonCategory(id: 2, name: "Self-Hygiene", icon: Icons.iron, lessons: []),
-      LessonCategory(id: 3, name: "Fashion", icon: Icons.watch, lessons: []),
-      LessonCategory(id: 4, name: "Testing", icon: Icons.help, lessons: []),
+      LessonCategory(
+        id: 1,
+        name: "Cooking", 
+        icon: Icons.bakery_dining, 
+        lessons: [
+          Lesson(
+            name: "Meal Prep",
+            icon: Icons.set_meal,
+            txts: ["Bulk Purchasing", "Variety", "Shelf Life"],
+            imgs: [
+              Image.asset("lib/assets/chicken-fried-rice-16.jpg",
+              ), 
+              Image.asset("lib/assets/vegetables.webp",
+              
+              ), 
+              Image.asset("lib/assets/frozen-food.webp",
+              )
+            ],
+          ),
+          Lesson(
+            name: "Meal Times",
+            icon: Icons.punch_clock,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Cleanup",
+            icon: Icons.table_restaurant,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+        ]
+        ),
+      LessonCategory(
+        id: 2, 
+        name: "Self-Hygiene", 
+        icon: Icons.iron, 
+        lessons: [
+          Lesson(
+            name: "Mornings",
+            icon: Icons.sunny,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Customs",
+            icon: Icons.house,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Nighttime",
+            icon: Icons.brightness_2,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+        ]
+      ),
+      LessonCategory(
+        id: 3, 
+        name: "Fashion", 
+        icon: Icons.watch, 
+        lessons: [
+          Lesson(
+            name: "Casual",
+            icon: Icons.checkroom,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Biz. Casual",
+            icon: Icons.business_center,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Formal",
+            icon: Icons.corporate_fare,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+        ]
+      ),
+      LessonCategory(
+        id: 4, 
+        name: "Interviews", 
+        icon: Icons.person_2_rounded, 
+        lessons: [
+          Lesson(
+            name: "Research",
+            icon: Icons.science,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Nerves",
+            icon: Icons.electric_meter,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+          Lesson(
+            name: "Questions",
+            icon: Icons.question_mark,
+            txts: ["help", "asdfjdsklfj", "dks"],
+            imgs: [null, null, null],
+          ),
+        ]
+      ),
     ];
+    
     tabs = [false, false, false, false, false, false];
   }
 

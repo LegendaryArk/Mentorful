@@ -44,8 +44,8 @@ class _LessonScreenState extends State<LessonScreen> {
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: Theme.of(context).colorScheme.onSurface),
           ),
           const SizedBox(height: 10),
-          widget.lesson.imgs.isEmpty && widget.lesson.imgs[i] != null
-              ? Expanded(child: widget.lesson.imgs[i]!)
+          widget.lesson.imgs.isNotEmpty && widget.lesson.imgs[i] != null
+              ? Expanded(child: PhotoPreview(image: widget.lesson.imgs[i]!))
               : SizedBox(),
           const SizedBox(height: 15),
           Text(

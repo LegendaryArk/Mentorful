@@ -72,7 +72,10 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  assets:
+      - lib/assets/chicken-fried-rice-16.jpg
+      - lib/assets/frozen-food.webp
+      - lib/assets/vegetables.webp
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
