@@ -52,7 +52,6 @@ Future<void> scheduleOnDate({
   required DateTime scheduledDate,
 }) async {
   // Convert to a TZ-aware date in the user's local timezone.
-  tz.initializeTimeZones();
   final tz.TZDateTime scheduledLocal =
   tz.TZDateTime.from(scheduledDate, tz.getLocation('America/Toronto'));
 
@@ -69,6 +68,7 @@ Future<void> scheduleOnDate({
   );
 
   // Schedule it:
+  print("notification scheduled");
   await localNotif.zonedSchedule(
     id,
     title,
@@ -83,11 +83,10 @@ Future<void> scheduleOnDate({
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  tz.initializeTimeZones();
   await requestNotificationPermission();
   appDir = await getApplicationDocumentsDirectory();
   prefs = await SharedPreferences.getInstance();
-
-  tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('America/Toronto'));
 
   // 2️⃣ Plugin initialization
@@ -114,6 +113,8 @@ Future<void> main() async {
   await localNotif
       .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
       ?.requestPermissions(alert: true, badge: true, sound: true);
+
+  await scheduleOnDate(body: "e", id: 0, title: "e", scheduledDate: DateTime.now().add(const Duration(minutes: 1)),);
 
   runApp(
     MaterialApp(
