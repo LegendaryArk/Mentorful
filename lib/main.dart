@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mentorful/aesthetics/colorSchemes.dart';
 import 'package:mentorful/screens/home.dart';
 import 'package:mentorful/screens/leaderboard.dart';
-import 'package:mentorful/screens/lessonPlan.dart';
+import 'package:mentorful/screens/lessons.dart';
 import 'package:mentorful/widgets/photoSubmission.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +12,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
-
-
 
 final GlobalKey<MentorfulState> mentorfulKey = GlobalKey<MentorfulState>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -27,14 +25,46 @@ Future<void> requestNotificationPermission() async {
     // Check current status
     final status = await Permission.notification.status;
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
     if (status.isDenied) {
       // Ask the user for permission
       final result = await Permission.notification.request();
     }
   }
+}
+
+Future<void> scheduleOnDate({
+  required int id,
+  required String title,
+  required String body,
+  required DateTime scheduledDate,
+}) async {
+  // Convert to a TZ-aware date in the user's local timezone.
+  tz.initializeTimeZones();
+  final tz.TZDateTime scheduledLocal =
+  tz.TZDateTime.from(scheduledDate, tz.getLocation('America/Toronto'));
+
+  // Build platform-specific details:
+  const notificationDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'one_time_channel',        // channel ID
+      'One-Time Notifications',  // channel name
+      channelDescription: 'Alerts scheduled for a specific date',
+      importance: Importance.max,
+      priority: Priority.high,
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
+
+  // Schedule it:
+  await localNotif.zonedSchedule(
+    id,
+    title,
+    body,
+    scheduledLocal,
+    notificationDetails,
+    androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    // no matchDateTimeComponents → fires only once
+  );
 }
 
 Future<void> main() async {
@@ -63,6 +93,7 @@ Future<void> main() async {
       // If you're inside a Navigator-able context you could do:
       // Navigator.of(navigatorKey.currentContext!)
       //     .pushNamed('/detail', arguments: payload);
+      savePhoto(navigatorKey.currentContext!);
     },
   );
 
