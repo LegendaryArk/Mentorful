@@ -1,6 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late Directory appDir;
+late SharedPreferences prefs;
+
+void main() async {
+  appDir = await getApplicationDocumentsDirectory();
+  prefs = await SharedPreferences.getInstance();
+
   runApp(const MyApp());
 }
 
