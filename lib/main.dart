@@ -4,16 +4,104 @@ import 'package:flutter/material.dart';
 import 'package:mentorful/screens/leaderboard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:permission_handler/permission_handler.dart';
+
+
 
 late Directory appDir;
 late SharedPreferences prefs;
+final localNotif = FlutterLocalNotificationsPlugin();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async {
+//android
+Future<void> requestNotificationPermission() async {
+  if (Platform.isAndroid) {
+    // Check current status
+    final status = await Permission.notification.status;
+
+    if (status.isDenied) {
+      // Ask the user for permission
+      final result = await Permission.notification.request();
+    } 
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await requestNotificationPermission();
   appDir = await getApplicationDocumentsDirectory();
   prefs = await SharedPreferences.getInstance();
 
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('America/Toronto'));
+
+  // 2️⃣ Plugin initialization
+  const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const iosInit = DarwinInitializationSettings();
+  await localNotif.initialize(
+    const InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+    ),
+    onDidReceiveNotificationResponse: (NotificationResponse response) {
+      // This runs when the user taps on a notification
+      final payload = response.payload;
+      // e.g. navigate to a specific screen, log analytics, etc.
+      print('Notification tapped! id=${response.id}, payload=$payload');
+      // If you're inside a Navigator-able context you could do:
+      // Navigator.of(navigatorKey.currentContext!)
+      //     .pushNamed('/detail', arguments: payload);
+    },
+  );
+
+  // 3️⃣ Request permissions on iOS (optional on Android)
+  await localNotif
+      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(alert: true, badge: true, sound: true);
+
+
   runApp(const MyApp());
 }
+
+
+Future<void> scheduleOnDate({
+  required int id,
+  required String title,
+  required String body,
+  required DateTime scheduledDate,
+}) async {
+  // Convert to a TZ-aware date in the user's local timezone.
+  final tz.TZDateTime scheduledLocal =
+      tz.TZDateTime.from(scheduledDate, tz.local);
+
+  // Build platform-specific details:
+  const notificationDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'one_time_channel',        // channel ID
+      'One-Time Notifications',  // channel name
+      channelDescription: 'Alerts scheduled for a specific date',
+      importance: Importance.max,
+      priority: Priority.high,
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
+
+  // Schedule it:
+  await localNotif.zonedSchedule(
+    id,
+    title,
+    body,
+    scheduledLocal,
+    notificationDetails,
+    androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    // no matchDateTimeComponents → fires only once
+  );
+}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

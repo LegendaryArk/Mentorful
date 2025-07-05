@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../lessonList.dart';
+import 'main.dart';
 
 
 
@@ -33,7 +34,6 @@ class _LessonPlanState extends State<LessonPlan> {
   }
   
   void _loadOccupation() async {
-    final prefs = await SharedPreferences.getInstance();
     setState(() {
       occupation = prefs.getString("occupation") ?? "other";
     });
