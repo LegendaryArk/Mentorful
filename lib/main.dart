@@ -8,17 +8,68 @@ import 'package:mentorful/screens/lessonPlan.dart';
 import 'package:mentorful/widgets/photoSubmission.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:permission_handler/permission_handler.dart';
+
+
 
 final GlobalKey<MentorfulState> mentorfulKey = GlobalKey<MentorfulState>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 late Directory appDir;
 late SharedPreferences prefs;
+final localNotif = FlutterLocalNotificationsPlugin();
+
+//android
+Future<void> requestNotificationPermission() async {
+  if (Platform.isAndroid) {
+    // Check current status
+    final status = await Permission.notification.status;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+    if (status.isDenied) {
+      // Ask the user for permission
+      final result = await Permission.notification.request();
+    }
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await requestNotificationPermission();
   appDir = await getApplicationDocumentsDirectory();
   prefs = await SharedPreferences.getInstance();
+
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('America/Toronto'));
+
+  // 2️⃣ Plugin initialization
+  const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const iosInit = DarwinInitializationSettings();
+  await localNotif.initialize(
+    const InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+    ),
+    onDidReceiveNotificationResponse: (NotificationResponse response) {
+      // This runs when the user taps on a notification
+      final payload = response.payload;
+      // e.g. navigate to a specific screen, log analytics, etc.
+      print('Notification tapped! id=${response.id}, payload=$payload');
+      // If you're inside a Navigator-able context you could do:
+      // Navigator.of(navigatorKey.currentContext!)
+      //     .pushNamed('/detail', arguments: payload);
+    },
+  );
+
+  // 3️⃣ Request permissions on iOS (optional on Android)
+  await localNotif
+      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(alert: true, badge: true, sound: true);
 
   runApp(
     MaterialApp(
