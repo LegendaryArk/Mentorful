@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mentorful/aesthetics/colorSchemes.dart';
 import 'package:mentorful/screens/home.dart';
 import 'package:mentorful/screens/leaderboard.dart';
-import 'package:mentorful/screens/lesson.dart';
-import 'package:mentorful/screens/lessonPlan.dart';
+import 'package:mentorful/screens/lessons.dart';
 import 'package:mentorful/widgets/photoSubmission.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -188,7 +187,7 @@ class MentorfulState extends State<Mentorful> {
   Widget build(BuildContext) {
     List<Widget> screens = [
       HomeScreen(key: PageStorageKey<String>("home")),
-      LessonPlan(key: PageStorageKey<String>("lessons")),
+      LessonsScreen(key: PageStorageKey<String>("lessons")),
       Container(),
       Leaderboard(key: PageStorageKey<String>("leaderboard")),
       Container(),
