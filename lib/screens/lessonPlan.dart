@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../lessonList.dart';
+import '../widgets/lessonList.dart';
 
 
 
