@@ -2,6 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<!-- Replace with your actual Reversed Client ID -->
+			<string>com.googleusercontent.apps.136345961977-orosn54cojaj3o6fs9kug2t4ihq6rbu9</string>
+		</array>
+		</dict>
+	</array>
+
+	<!-- 2. Allow your app to query/launch Google’s auth URLs -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>google</string>
+		<string>com.google</string>
+		<string>com.googleusercontent.apps.136345961977-orosn54cojaj3o6fs9kug2t4ihq6rbu9</string>
+	</array>
+
+	<!-- 3. (Optional) Permit HTTP calls to your 172.20.10.2 backend -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

@@ -8,6 +8,7 @@ void main() {
 
 // GoogleSignIn instance
 final GoogleSignIn _googleSignIn = GoogleSignIn(
+  clientId: '136345961977-orosn54cojaj3o6fs9kug2t4ihq6rbu9.apps.googleusercontent.com',
   scopes: [
     'email',
     'https://www.googleapis.com/auth/userinfo.profile',
@@ -43,42 +44,36 @@ class _MyHomePageState extends State<MyHomePage> {
   String _calendarResponse = '';
 
   Future<void> _handleSignIn() async {
-    try {
-      print('Attempting to sign in...');
-      final account = await _googleSignIn.signIn();
-
-      if (account == null) {
-        setState(() {
-          _calendarResponse = 'User cancelled sign-in or sign-in failed.';
-        });
-        return;
-      }
-
-      final auth = await account.authentication;
-
-      if (auth.accessToken == null) {
-        setState(() {
-          _calendarResponse = 'No access token retrieved.';
-        });
-        return;
-      }
-
-      final token = auth.accessToken!;
-      final uri = Uri.parse("http://172.20.10.2:8000/get-calendar/?token=$token");
-
-      final response = await http.get(uri);
-
-      setState(() {
-        _currentUser = account;
-        _calendarResponse = response.body;
-      });
-    } catch (error) {
-      print("Google Sign-In Error: $error");
-      setState(() {
-        _calendarResponse = 'Error: $error';
-      });
+  try {
+    print('Attempting to sign in...');
+    final account = await _googleSignIn.signIn();
+    if (account == null) {
+      setState(() => _calendarResponse = 'Sign-in cancelled.');
+      return;
     }
+
+    // **1) Immediately flip the UI over to "signed in"**
+    setState(() {
+      _currentUser = account;
+      _calendarResponse = 'Loading your calendar…';
+    });
+
+    // 2) Then fetch your calendar
+    final auth  = await account.authentication;
+    final token = auth.accessToken!;
+    final uri   = Uri.parse('http://172.20.10.2:8000/get-calendar/?token=$token');
+    final resp  = await http.get(uri);
+
+    // 3) Finally, show the response
+    setState(() => _calendarResponse = resp.body);
+  } catch (error) {
+    // If anything blows up, at least _currentUser is set:
+    setState(() {
+      _calendarResponse = 'Error: $error';
+    });
   }
+}
+
 
   Future<void> _handleSignOut() async {
     await _googleSignIn.signOut();
