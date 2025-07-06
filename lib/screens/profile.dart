@@ -88,13 +88,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                     value: occupation,
                     items: [
                       DropdownMenuItem(
-                          value: "High School", child: Text("High School", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
+                          value: "High Schooler", child: Text("High Schooler", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
                       DropdownMenuItem(
-                          value: "University",
-                          child: Text("University", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
+                          value: "University Student",
+                          child: Text("University Student", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
                       DropdownMenuItem(
-                          value: "Working Class",
-                          child: Text("Working Class", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
+                          value: "Work Force",
+                          child: Text("Work Force", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface))),
                       DropdownMenuItem(
                           value: "Other", child: Text("Other", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurface)))
                     ],
