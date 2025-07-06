@@ -188,11 +188,11 @@ class MentorfulState extends State<Mentorful> {
   @override
   Widget build(BuildContext) {
     List<Widget> screens = [
-      HomeScreen(key: PageStorageKey<String>("home")),
-      LessonsScreen(key: PageStorageKey<String>("lessons")),
+      HomeScreen(),
+      LessonsScreen(),
       Container(),
-      Leaderboard(key: PageStorageKey<String>("leaderboard")),
-      ProfileScreen(key: PageStorageKey<String>("profile")),
+      Leaderboard(),
+      ProfileScreen(),
     ];
 
     List<NavigationDestination> destination = [

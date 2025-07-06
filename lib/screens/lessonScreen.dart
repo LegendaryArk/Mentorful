@@ -25,15 +25,6 @@ class _LessonScreenState extends State<LessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = false;
-    if (Theme.of(context).brightness == Brightness.dark) {
-      isDarkMode = true;
-    }
-
-    String imageStringAddition = "";
-    if (isDarkMode) {
-      imageStringAddition = "Dark";
-    }
     List<Widget> lessonPages = widget.lesson.txts.map((e) {
       int i = widget.lesson.txts.indexWhere((e2) => e2 == e);
       return Column(
@@ -59,92 +50,6 @@ class _LessonScreenState extends State<LessonScreen> {
         ],
       );
     }).toList();
-    // List<Widget> featurePages = [
-    //   Column(children: [
-    //     Text(
-    //       'At a glance',
-    //       style: TextStyle(
-    //         fontSize: 32,
-    //         fontWeight: FontWeight.w300,
-    //         color: Theme.of(context).colorScheme.secondary,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 8),
-    //     Text(
-    //       'Upcoming matches & info',
-    //       style: TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.w400,
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 20),
-    //     //Expanded(child: PhotoPreview(imageLocation: 'assets/onboardingHome$imageStringAddition.png'))
-    //   ]),
-    //   Column(children: [
-    //     Text(
-    //       'Find matches',
-    //       style: TextStyle(
-    //         fontSize: 32,
-    //         fontWeight: FontWeight.w300,
-    //         color: Theme.of(context).colorScheme.secondary,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 8),
-    //     Text(
-    //       'See scores and live timing',
-    //       style: TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.w400,
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 20),
-    //     //Expanded(child: PhotoPreview(imageLocation: "assets/onboardingSchedule$imageStringAddition.png"))
-    //   ]),
-    //   Column(children: [
-    //     Text(
-    //       'Check rankings',
-    //       style: TextStyle(
-    //         fontSize: 32,
-    //         fontWeight: FontWeight.w300,
-    //         color: Theme.of(context).colorScheme.secondary,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 8),
-    //     Text(
-    //       'Find teams and stats',
-    //       style: TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.w400,
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 20),
-    //     //Expanded(child: PhotoPreview(imageLocation: 'assets/onboardingRankings$imageStringAddition.png'))
-    //   ]),
-    //   Column(children: [
-    //     Text(
-    //       'Dive deeper',
-    //       style: TextStyle(
-    //         fontSize: 32,
-    //         fontWeight: FontWeight.w300,
-    //         color: Theme.of(context).colorScheme.secondary,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 8),
-    //     Text(
-    //       'Get stats about your team',
-    //       style: TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.w400,
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //       ),
-    //     ),
-    //     const SizedBox(height: 20),
-    //     //Expanded(child: PhotoPreview(imageLocation: 'assets/onboardingMyTeam$imageStringAddition.png'))
-    //   ]),
-    // ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,

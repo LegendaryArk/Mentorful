@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/lesson.dart';
 import '../util/lessonCategory.dart';
+import '../util/occupation.dart';
 import '../widgets/lessonList.dart';
 
 class LessonsScreen extends StatefulWidget {
@@ -26,6 +27,12 @@ class _LessonsScreenState extends State<LessonsScreen> {
     cats = [
       LessonCategory(
         id: 0,
+        name: "Recommended",
+        icon: Icons.thumb_up,
+        lessons: getOccupation().lessons
+      ),
+      LessonCategory(
+        id: 1,
         name: "Time Management",
         icon: Icons.schedule,
         lessons: [
@@ -40,7 +47,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         ],
       ),
       LessonCategory(
-        id: 1,
+        id: 2,
         name: "Cooking", 
         icon: Icons.bakery_dining, 
         lessons: [
@@ -73,7 +80,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         ]
         ),
       LessonCategory(
-        id: 2, 
+        id: 3,
         name: "Self-Hygiene", 
         icon: Icons.iron, 
         lessons: [
@@ -98,7 +105,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         ]
       ),
       LessonCategory(
-        id: 3, 
+        id: 4,
         name: "Fashion", 
         icon: Icons.watch, 
         lessons: [
@@ -123,7 +130,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         ]
       ),
       LessonCategory(
-        id: 4, 
+        id: 5,
         name: "Interviews", 
         icon: Icons.person_2_rounded, 
         lessons: [
@@ -166,6 +173,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
       body: ListView(
         shrinkWrap: true,
         children: cats.map((e) {
+          if (e.lessons.isEmpty) return SizedBox();
           int i = cats.indexWhere((e1) => e1.id == e.id);
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
