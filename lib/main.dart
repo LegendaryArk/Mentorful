@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mentorful/aesthetics/colorSchemes.dart';
 import 'package:mentorful/screens/home.dart';
 import 'package:mentorful/screens/leaderboard.dart';
 import 'package:mentorful/screens/lessons.dart';
+import 'package:mentorful/screens/profile.dart';
 import 'package:mentorful/widgets/photoSubmission.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -190,7 +192,7 @@ class MentorfulState extends State<Mentorful> {
       LessonsScreen(key: PageStorageKey<String>("lessons")),
       Container(),
       Leaderboard(key: PageStorageKey<String>("leaderboard")),
-      Container(),
+      ProfileScreen(key: PageStorageKey<String>("profile")),
     ];
 
     List<NavigationDestination> destination = [
@@ -243,10 +245,17 @@ class MentorfulState extends State<Mentorful> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 4,
           shadowColor: Color.fromRGBO(0, 0, 0, 0.5),
+          leading: Container(
+            child: SvgPicture.asset("lib/assets/mentorfulLogo.svg"),
+          ),
           title: Padding(
             padding: EdgeInsets.only(top: 50, bottom: 15),
             child: Text("Mentorful.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
           ),
+          actions: [
+            CircleAvatar(radius: 30, child: Icon(Icons.person)),
+            SizedBox(width: 10),
+          ]
         ),
       ),
       body: PageStorage(bucket: _bucket, child: screens[selectedIndex]),
