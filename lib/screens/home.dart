@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../screens/lessonScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(height: 300),
+          Center(child: SizedBox(
+            height: 200, width: 200,
+            child: Image.asset("lib/assets/sad.png", fit: BoxFit.cover,),
+          ),),
+          SizedBox(height: 120),
           Center(
           child: Container(
             height: 188,
