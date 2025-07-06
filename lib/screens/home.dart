@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Icon(Icons.local_fire_department, size: 100, color: Color.fromRGBO(255, 89, 0, 1)),
                 Text(
-                  "69 days",
+                  "1 day",
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800, color: Theme.of(context).colorScheme.onPrimary),
                 ),
               ],
