@@ -79,6 +79,7 @@ class _LeaderboardState extends State<Leaderboard> {
                       height: 120,
                       viewportFraction: 0.3,
                       enableInfiniteScroll: false,
+                      scrollPhysics: NeverScrollableScrollPhysics(),
                       onPageChanged: (index, reason) {
                         switch (index) {
                           case 0:
