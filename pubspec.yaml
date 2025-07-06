@@ -77,6 +77,7 @@ flutter:
       - lib/assets/chicken-fried-rice-16.jpg
       - lib/assets/frozen-food.webp
       - lib/assets/vegetables.webp
+      - lib/assets/sad.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
