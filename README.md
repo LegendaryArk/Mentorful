@@ -1,4 +1,4 @@
-# mentorful
+# Mentorful
 
 ## Inspiration
 
