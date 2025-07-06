@@ -174,7 +174,7 @@ Future<void> savePhoto(BuildContext context) async {
                                         setState(() {
                                           processingImg = false;
                                         });
-                                        Navigator.pop(context);
+                                        Navigator.pop(context, res);
                                       }
                                     },
                                     icon: Icon(Icons.check, color: Colors.lightGreen),
