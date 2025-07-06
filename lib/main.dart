@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mentorful/aesthetics/colorSchemes.dart';
 import 'package:mentorful/screens/home.dart';
 import 'package:mentorful/screens/leaderboard.dart';
@@ -54,14 +53,13 @@ Future<void> scheduleOnDate({
 }) async {
   // Convert to a TZ-aware date in the user's local timezone.
   tz.initializeTimeZones();
-  final tz.TZDateTime scheduledLocal =
-  tz.TZDateTime.from(scheduledDate, tz.getLocation('America/Toronto'));
+  final tz.TZDateTime scheduledLocal = tz.TZDateTime.from(scheduledDate, tz.getLocation('America/Toronto'));
 
   // Build platform-specific details:
   const notificationDetails = NotificationDetails(
     android: AndroidNotificationDetails(
-      'one_time_channel',        // channel ID
-      'One-Time Notifications',  // channel name
+      'one_time_channel', // channel ID
+      'One-Time Notifications', // channel name
       channelDescription: 'Alerts scheduled for a specific date',
       importance: Importance.max,
       priority: Priority.high,
@@ -95,10 +93,7 @@ Future<void> main() async {
   const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
   const iosInit = DarwinInitializationSettings();
   await localNotif.initialize(
-    const InitializationSettings(
-      android: androidInit,
-      iOS: iosInit,
-    ),
+    const InitializationSettings(android: androidInit, iOS: iosInit),
     onDidReceiveNotificationResponse: (NotificationResponse response) {
       // This runs when the user taps on a notification
       final payload = response.payload;
@@ -112,9 +107,11 @@ Future<void> main() async {
   );
 
   // 3️⃣ Request permissions on iOS (optional on Android)
-  await localNotif
-      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(alert: true, badge: true, sound: true);
+  await localNotif.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   runApp(
     MaterialApp(
@@ -146,36 +143,35 @@ class MentorfulState extends State<Mentorful> {
   String _calendarResponse = '';
 
   Future<void> _handleSignIn() async {
-  try {
-    print('Attempting to sign in...');
-    final account = await _googleSignIn.signIn();
-    if (account == null) {
-      setState(() => _calendarResponse = 'Sign-in cancelled.');
-      return;
+    try {
+      print('Attempting to sign in...');
+      final account = await _googleSignIn.signIn();
+      if (account == null) {
+        setState(() => _calendarResponse = 'Sign-in cancelled.');
+        return;
+      }
+
+      // **1) Immediately flip the UI over to "signed in"**
+      setState(() {
+        _currentUser = account;
+        _calendarResponse = 'Loading your calendar…';
+      });
+
+      // 2) Then fetch your calendar
+      final auth = await account.authentication;
+      final token = auth.accessToken!;
+      final uri = Uri.parse('http://172.20.10.2:8000/get-calendar/?token=$token');
+      final resp = await http.get(uri);
+
+      // 3) Finally, show the response
+      setState(() => _calendarResponse = resp.body);
+    } catch (error) {
+      // If anything blows up, at least _currentUser is set:
+      setState(() {
+        _calendarResponse = 'Error: $error';
+      });
     }
-
-    // **1) Immediately flip the UI over to "signed in"**
-    setState(() {
-      _currentUser = account;
-      _calendarResponse = 'Loading your calendar…';
-    });
-
-    // 2) Then fetch your calendar
-    final auth  = await account.authentication;
-    final token = auth.accessToken!;
-    final uri   = Uri.parse('http://172.20.10.2:8000/get-calendar/?token=$token');
-    final resp  = await http.get(uri);
-
-    // 3) Finally, show the response
-    setState(() => _calendarResponse = resp.body);
-  } catch (error) {
-    // If anything blows up, at least _currentUser is set:
-    setState(() {
-      _calendarResponse = 'Error: $error';
-    });
   }
-}
-
 
   Future<void> _handleSignOut() async {
     await _googleSignIn.signOut();
@@ -187,13 +183,7 @@ class MentorfulState extends State<Mentorful> {
 
   @override
   Widget build(BuildContext) {
-    List<Widget> screens = [
-      HomeScreen(),
-      LessonsScreen(),
-      Container(),
-      Leaderboard(),
-      ProfileScreen(),
-    ];
+    List<Widget> screens = [HomeScreen(), LessonsScreen(), Container(), Leaderboard(), ProfileScreen()];
 
     List<NavigationDestination> destination = [
       NavigationDestination(
@@ -246,7 +236,10 @@ class MentorfulState extends State<Mentorful> {
           elevation: 4,
           shadowColor: Color.fromRGBO(0, 0, 0, 0.5),
           leading: Container(
-            child: SvgPicture.asset("lib/assets/mentorfulLogo.svg"),
+            padding: const EdgeInsets.only(left: 10),
+            height: 30,
+            width: 30,
+            child: Image.asset("lib/assets/mentorfulLogo.png", fit: BoxFit.contain),
           ),
           title: Padding(
             padding: EdgeInsets.only(top: 50, bottom: 15),
@@ -255,7 +248,7 @@ class MentorfulState extends State<Mentorful> {
           actions: [
             CircleAvatar(radius: 30, child: Icon(Icons.person)),
             SizedBox(width: 10),
-          ]
+          ],
         ),
       ),
       body: PageStorage(bucket: _bucket, child: screens[selectedIndex]),
