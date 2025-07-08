@@ -54,7 +54,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
           Lesson(
             name: "Meal Prep",
             icon: Icons.set_meal,
-            txts: ["Bulk Purchasing", "Variety", "Shelf Life"],
+            txts: ["Bulk Purchasing:\nPurchasing ingredients in bulk often allow for fresher, cheaper, and higher-quality products.", "Variety: \nEating a variety of food groups ensures a balanced diet, leading to improved cognitive and physical abilities.", "Shelf Life: \nUnderstanding the shelf life of foods can help you prioritize certain food groups when shopping, and also helps reduce food waste,."],
             imgs: [
               Image.asset("lib/assets/chicken-fried-rice-16.jpg",
               ), 
